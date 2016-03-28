@@ -22,8 +22,6 @@
                     </xsd:complexType>
                 </xsd:element>
             </xsd:sequence>
-
-            <xsd:attribute name="revision" type="xsd:string" use="required" />
         </xsd:complexType>
 
         <xsd:key name="exceptionName">

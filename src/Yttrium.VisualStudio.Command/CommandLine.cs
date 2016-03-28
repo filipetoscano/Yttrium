@@ -13,6 +13,13 @@ namespace Yttrium.VisualStudio.Command
         }
 
 
+        public string Project
+        {
+            get;
+            private set;
+        }
+
+
         public string File
         {
             get;
@@ -21,6 +28,13 @@ namespace Yttrium.VisualStudio.Command
 
 
         public string Namespace
+        {
+            get;
+            private set;
+        }
+
+
+        public bool DryRun
         {
             get;
             private set;
@@ -41,6 +55,10 @@ namespace Yttrium.VisualStudio.Command
                 { "tool=",      v => this.Tool = v },
                 { "t=",         v => this.Tool = v },
 
+                { "project=",   v => this.Project = v },
+                { "p=",         v => this.Project = v },
+                { "d|dry",      v => this.DryRun = true },
+
                 { "file=",      v => this.File = v },
                 { "f=",         v => this.File = v },
 
@@ -59,15 +77,36 @@ namespace Yttrium.VisualStudio.Command
             }
 
 
-            if ( string.IsNullOrEmpty( this.Tool ) == true )
+            /*
+             * Either the user specifies .Project, and the tool will crawl through the
+             * .csproj file and apply the custom tools defined -OR- .Tool and .File
+             * need to be specified.
+             */
+            if ( string.IsNullOrEmpty( this.Project ) == false )
             {
-                Console.Error.WriteLine( "error: tool parameter is mandatory (use --tool=TOOL)." );
-                return false;
-            }
+                if ( string.IsNullOrEmpty( this.Tool ) == false )
+                {
+                    Console.Error.WriteLine( "error: if using --project, using --tool is not permitted." );
+                    return false;
+                }
 
-            if ( string.IsNullOrEmpty( this.File ) == true )
+                if ( string.IsNullOrEmpty( this.File ) == false )
+                {
+                    Console.Error.WriteLine( "error: if using --project, using --file is not permitted." );
+                    return false;
+                }
+            }
+            else if ( string.IsNullOrEmpty( this.File ) == false )
             {
-                Console.Error.WriteLine( "error: file parameter is mandatory (use --file=FILE)." );
+                if ( string.IsNullOrEmpty( this.Tool ) == true )
+                {
+                    Console.Error.WriteLine( "error: tool parameter is mandatory (use --tool=TOOL)." );
+                    return false;
+                }
+            }
+            else
+            {
+                Console.Error.WriteLine( "error: file or project parameter is mandatory (use --file or --project)." );
                 return false;
             }
 

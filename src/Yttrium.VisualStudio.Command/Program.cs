@@ -27,7 +27,8 @@ namespace Yttrium.VisualStudio.Command
 
 
             /*
-             * .Tool
+             * TODO: We should generate this list based on reflection, so
+             * that it isn't necessary to also update this list all the time.
              */
             List<string> tools = new List<string>();
             tools.Add( "ConfigGenTool" );
@@ -37,6 +38,84 @@ namespace Yttrium.VisualStudio.Command
             tools.Add( "WsdlTool" );
             tools.Add( "XsdTool" );
             tools.Add( "XsltTool" );
+
+
+            /*
+             *
+             */
+            if ( cl.Project != null )
+                RunProject( cl, tools );
+
+            if ( cl.File != null )
+                RunFile( cl, tools );
+        }
+
+
+        /// <summary>
+        /// Runs all of the extension custom tools for the specified project.
+        /// </summary>
+        /// <param name="cl">Command-line.</param>
+        /// <param name="tools">List of custom tools.</param>
+        private static void RunProject( CommandLine cl, List<string> tools )
+        {
+            /*
+             *
+             */
+            XmlNamespaceManager manager = new XmlNamespaceManager( new NameTable() );
+            manager.AddNamespace( "ns", "http://schemas.microsoft.com/developer/msbuild/2003" );
+
+            XmlDocument csproj = new XmlDocument();
+            csproj.Load( cl.Project );
+
+            XmlElement elem = (XmlElement) csproj.SelectSingleNode( " /ns:Project/ns:PropertyGroup/ns:RootNamespace ", manager );
+            string rootNs = elem.InnerText;
+
+            foreach ( XmlElement contentElem in csproj.SelectNodes( @" //ns:Content[ @Include and ns:Generator ] | " +
+                                                                     " //ns:None[ @Include and ns:Generator ] ", manager ) )
+            {
+                string relativePath = contentElem.Attributes[ "Include" ].Value;
+                string tool = contentElem.SelectSingleNode( " ns:Generator ", manager ).InnerText;
+
+                if ( tools.FirstOrDefault( t => t == tool ) == null )
+                    continue;
+
+                string fullName = Path.Combine(
+                    Path.GetDirectoryName( cl.Project ),
+                    relativePath );
+                FileInfo file = new FileInfo( fullName );
+
+                string ns = ToNamespace( rootNs, relativePath );
+
+                Console.WriteLine( "f={0} ns={1} t={2}", relativePath, ns, tool );
+
+                if ( cl.DryRun == false )
+                    RunTool( tool, file, ns );
+            }
+        }
+
+
+        private static string ToNamespace( string rootNs, string relativePath )
+        {
+            int ix = relativePath.LastIndexOf( "\\", StringComparison.Ordinal );
+
+            if ( ix == -1 )
+                return rootNs;
+
+            return string.Concat( rootNs, ".", relativePath.Substring( 0, ix ).Replace( "\\", "." ) );
+        }
+
+
+        /// <summary>
+        /// Runs the custom tool for the specified file.
+        /// </summary>
+        /// <param name="cl">Command-line.</param>
+        /// <param name="tools">List of custom tools.</param>
+        public static void RunFile( CommandLine cl, List<string> tools )
+        {
+            /*
+             * .Tool
+             */
+
 
             string tool = tools.FirstOrDefault( t => t.ToLowerInvariant() == cl.Tool.ToLowerInvariant() );
 
@@ -83,9 +162,17 @@ namespace Yttrium.VisualStudio.Command
             Console.WriteLine( "tool={0}", tool );
             Console.WriteLine( "namespace={0}", ns );
 
+
             /*
              * 
              */
+            if ( cl.DryRun == false )
+                RunTool( tool, file, ns );
+        }
+
+
+        private static void RunTool( string tool, FileInfo file, string ns )
+        {
             BaseTool bt = (BaseTool) Activator.CreateInstance( "Yttrium.VisualStudio", "Yttrium.VisualStudio." + tool ).Unwrap();
 
             string content;
@@ -111,7 +198,6 @@ namespace Yttrium.VisualStudio.Command
             string outputFile = Path.Combine( file.DirectoryName, Path.GetFileNameWithoutExtension( file.FullName ) + ".cs" );
             File.WriteAllText( outputFile, content, Encoding.UTF8 );
         }
-
 
 
         private static string WalkUp( DirectoryInfo fileDirectory, DirectoryInfo directory )
