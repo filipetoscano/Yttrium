@@ -4,8 +4,8 @@ using System.Resources;
 using System.Runtime.InteropServices;
 
 // Assembly information
-[assembly: AssemblyTitle( "" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyTitle( "VisualStudio" )]
+[assembly: AssemblyDescription( "Custom tools for Visual Studio." )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "Yttrium" )]

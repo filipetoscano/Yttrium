@@ -4,8 +4,8 @@ using System.Resources;
 using System.Runtime.InteropServices;
 
 // Assembly information
-[assembly: AssemblyTitle( "DbConfig" )]
-[assembly: AssemblyDescription( "Because manual editing of tables is not repeatable!" )]
+[assembly: AssemblyTitle( "VisualStudio/Cmd" )]
+[assembly: AssemblyDescription( "Command-line version of the VisualStudio custom tools." )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "Yttrium" )]
@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 // Additional information
 [assembly: CLSCompliant( false )]
 [assembly: ComVisible( false )]
-[assembly: Guid( "a5e3a504-42ba-4da1-b18c-470e25b952bb" )]
+[assembly: Guid( "c195cfd5-adc1-40b6-bd81-f35b6c2809d4" )]
 [assembly: NeutralResourcesLanguage( "en-GB" )]
 
 // Version information

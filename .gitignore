@@ -1,10 +1,4 @@
 *.suo
 *.csproj.user
-src/Yttrium.Core/bin/
-src/Yttrium.Core/obj/
-src/Yttrium.DbConfig/bin/
-src/Yttrium.DbConfig/obj/
-src/Yttrium.OraPack/bin/
-src/Yttrium.OraPack/obj/
-src/Yttrium.VisualStudio/bin/
-src/Yttrium.VisualStudio/obj/
+src/**/bin/
+src/**/obj/

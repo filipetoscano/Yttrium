@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: automation.proj 58 2015-07-16 20:13:27Z lft $ -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+    DefaultTargets="help">
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ 
+    ~ help/
+    ~ 
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <Target Name="help">
+    </Target>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ 
+    ~ clean/
+    ~ 
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <Target Name="clean">
+        <MSBuild Projects="Yttrium.sln" Properties="Configuration=Debug" />
+        <MSBuild Projects="Yttrium.sln" Properties="Configuration=Release" />
+    </Target>
+
+    
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ 
+    ~ build/
+    ~ 
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <Target Name="build">
+        <MSBuild Projects="Yttrium.sln" Properties="Configuration=Release" />
+    </Target>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~ 
+    ~ package/
+    ~ 
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <Target Name="package">
+        <MakeDir Directories="PACKAGE" />
+
+        <ItemGroup>
+            <Content Include="src\Yttrium.Core\bin\Release\Yttrium.Core.dll" />
+            <Content Include="src\Yttrium.DbConfig\bin\Release\dbconfig.exe" />
+            <Content Include="src\Yttrium.DbManifest\bin\Release\dbmanifest.exe" />
+            <Content Include="src\Yttrium.OraPack\bin\Release\orapack.exe" />
+            <Content Include="src\Yttrium.VisualStudio\bin\Release\Yttrium.VisualStudio.dll" />
+            <Content Include="src\Yttrium.VisualStudio.Command\bin\Release\yvscmd.exe" />
+        </ItemGroup>
+        
+        <Copy SourceFiles="@(Content)" DestinationFolder="..\PACKAGE" />
+    </Target>
+    
+</Project>

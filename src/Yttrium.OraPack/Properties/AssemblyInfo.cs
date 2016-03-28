@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 // Assembly information
 [assembly: AssemblyTitle( "orapack" )]
-[assembly: AssemblyDescription( "" )]
+[assembly: AssemblyDescription( "Build an Oracle package from individually versioned assets." )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "Yttrium" )]

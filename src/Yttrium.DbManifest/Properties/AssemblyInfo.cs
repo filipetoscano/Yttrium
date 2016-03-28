@@ -4,8 +4,8 @@ using System.Resources;
 using System.Runtime.InteropServices;
 
 // Assembly information
-[assembly: AssemblyTitle( "DbConfig" )]
-[assembly: AssemblyDescription( "Because manual editing of tables is not repeatable!" )]
+[assembly: AssemblyTitle( "DbManifest" )]
+[assembly: AssemblyDescription( "Generates a manifest of a database." )]
 [assembly: AssemblyConfiguration( "" )]
 [assembly: AssemblyCompany( "" )]
 [assembly: AssemblyProduct( "Yttrium" )]
@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 // Additional information
 [assembly: CLSCompliant( false )]
 [assembly: ComVisible( false )]
-[assembly: Guid( "a5e3a504-42ba-4da1-b18c-470e25b952bb" )]
+[assembly: Guid( "c0ff714f-38b7-47ab-91b5-80a94963d981" )]
 [assembly: NeutralResourcesLanguage( "en-GB" )]
 
 // Version information
