@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yttrium.Core", "src\Yttrium
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yttrium.VisualStudio", "src\Yttrium.VisualStudio\Yttrium.VisualStudio.csproj", "{0AF441D2-2BFC-4289-B05D-2C4959624D7F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yttrium.OraPack", "src\Yttrium.OraPack\Yttrium.OraPack.csproj", "{D2824B25-F118-4239-8264-16FE70735FF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yttrium.DbConfig", "src\Yttrium.DbConfig\Yttrium.DbConfig.csproj", "{EEF6CDCD-2E16-46ED-92AF-553D2B4D3805}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,14 @@ Global
 		{0AF441D2-2BFC-4289-B05D-2C4959624D7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AF441D2-2BFC-4289-B05D-2C4959624D7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AF441D2-2BFC-4289-B05D-2C4959624D7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2824B25-F118-4239-8264-16FE70735FF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2824B25-F118-4239-8264-16FE70735FF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2824B25-F118-4239-8264-16FE70735FF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2824B25-F118-4239-8264-16FE70735FF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEF6CDCD-2E16-46ED-92AF-553D2B4D3805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEF6CDCD-2E16-46ED-92AF-553D2B4D3805}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEF6CDCD-2E16-46ED-92AF-553D2B4D3805}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEF6CDCD-2E16-46ED-92AF-553D2B4D3805}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
