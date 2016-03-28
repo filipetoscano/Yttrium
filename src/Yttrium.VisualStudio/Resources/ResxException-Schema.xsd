@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    targetNamespace="urn:platinum/actor/exception"
+    xmlns:p="urn:platinum/actor/exception"
+    xmlns="urn:platinum/actor/exception">
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~
+    ~ exceptions/
+    ~ Schema root
+    ~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xsd:element name="exceptions">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="add" minOccurs="0" maxOccurs="unbounded">
+                    <xsd:complexType>
+                        <xsd:attribute name="name" type="p:exceptionTypeName" use="required" />
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+
+            <xsd:attribute name="revision" type="xsd:string" use="required" />
+        </xsd:complexType>
+
+        <xsd:key name="exceptionName">
+            <xsd:selector xpath=" p:add " />
+            <xsd:field xpath=" @name " />
+        </xsd:key>
+    </xsd:element>
+
+
+    <xsd:simpleType name="exceptionTypeName">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="([A-Z][A-Za-z0-9]*)+Exception" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

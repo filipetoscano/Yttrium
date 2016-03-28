@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?codebehind transformation="Resources/Tools-ToCode.xslt"?>
+<tools revision="$Id: Tools.xml 22 2014-10-02 23:48:39Z lft $">
+    <add name="ConfigGenTool" guid="bc18e15c-b63b-4dfc-b993-a94d1dd11664">
+        <description>Configuration class generation tool</description>
+    </add>
+
+    <add name="FileGetTool" guid="af375fa8-e16a-49db-a0aa-672b7b8c3f36">
+        <description>Simplifies downloading files.</description>
+    </add>
+
+    <add name="ResxErrorTool" guid="69466aa6-8409-4d15-9b7e-69b3a19c2686">
+        <description>Supports ResxActorException asset generation</description>
+    </add>
+
+    <add name="ResxExceptionTool" guid="283bcca6-42f7-486a-9ac6-956385dc9338">
+        <description>Generates ResxException derived classes</description>
+    </add>
+
+    <add name="WsdlTool" guid="384814a8-0c01-49f5-b934-c304bd0d854c">
+        <description>Generates a proxy file</description>
+    </add>
+
+    <add name="XsdTool" guid="3ad049bc-27e0-4e4c-b225-247c62f554b5">
+        <description>Runs xsd.exe command-line tool over schema.</description>
+    </add>
+
+    <add name="XsltTool" guid="027cef63-68b2-43e0-ba77-fe14d1bfe870">
+        <description>XSLT transformer</description>
+    </add>
+</tools>

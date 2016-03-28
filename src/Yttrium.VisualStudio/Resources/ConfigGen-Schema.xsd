@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    targetNamespace="urn:yttrium/vs/config"
+    xmlns:y="urn:yttrium/vs/config"
+    xmlns="urn:yttrium/vs/config">
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~
+    ~ configuration/
+    ~ Schema root
+    ~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xsd:element name="configuration">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="section">
+                    <xsd:complexType>
+                        <xsd:choice maxOccurs="unbounded">
+                            <xsd:element name="repeater" type="y:repeaterType" />
+                            <xsd:element name="element" type="y:elementType">
+                                <xsd:key name="elementProperties1">
+                                    <xsd:selector xpath=" y:* " />
+                                    <xsd:field xpath=" @name " />
+                                </xsd:key>
+                            </xsd:element>
+
+                            <!-- Property -->
+                            <xsd:element name="bool" type="y:boolType" />
+                            <xsd:element name="enum" type="y:enumType" />
+                            <xsd:element name="int" type="y:intType" />
+                            <xsd:element name="string" type="y:stringType" />
+                        </xsd:choice>
+
+                        <xsd:attribute name="name" type="xsd:string" use="required" />
+                        <xsd:attribute name="type" type="xsd:string" use="required" />
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+
+            <xsd:attribute name="revision" type="xsd:string" use="required" />
+        </xsd:complexType>
+
+        <xsd:key name="classTypes">
+            <xsd:selector xpath=" y:section | .//y:item | .//y:element " />
+            <xsd:field xpath=" @type " />
+        </xsd:key>
+    </xsd:element>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~
+    ~ elementType
+    ~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xsd:complexType name="elementType">
+        <xsd:choice maxOccurs="unbounded">
+            <xsd:element name="repeater" type="y:repeaterType" />
+            <xsd:element name="element" type="y:elementType">
+                <xsd:key name="elementProperties2">
+                    <xsd:selector xpath=" y:* " />
+                    <xsd:field xpath=" @name " />
+                </xsd:key>
+            </xsd:element>
+
+            <!-- Property -->
+            <xsd:element name="bool" type="y:boolType" />
+            <xsd:element name="enum" type="y:enumType" />
+            <xsd:element name="int" type="y:intType" />
+            <xsd:element name="string" type="y:stringType" />
+        </xsd:choice>
+
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="as" type="xsd:string" use="optional" />
+        <xsd:attribute name="type" type="xsd:string" use="required" />
+        <xsd:attribute name="optional" type="xsd:boolean" use="optional" default="false" />
+    </xsd:complexType>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~
+    ~ repeaterType
+    ~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xsd:complexType name="repeaterType">
+        <xsd:sequence>
+            <xsd:sequence>
+                <xsd:element name="item">
+                    <xsd:complexType>
+                        <xsd:choice maxOccurs="unbounded">
+                            <xsd:element name="repeater" type="y:repeaterType" />
+                            <xsd:element name="element" type="y:elementType">
+                                <xsd:key name="elementProperties3">
+                                    <xsd:selector xpath=" y:* " />
+                                    <xsd:field xpath=" @name " />
+                                </xsd:key>
+                            </xsd:element>
+
+                            <!-- Property -->
+                            <xsd:element name="bool" type="y:boolType" />
+                            <xsd:element name="enum" type="y:enumType" />
+                            <xsd:element name="int" type="y:intType" />
+                            <xsd:element name="string" type="y:stringType" />
+                        </xsd:choice>
+
+                        <xsd:attribute name="type" type="xsd:string" use="required" />
+                    </xsd:complexType>
+
+                    <xsd:key name="itemProperties">
+                        <xsd:selector xpath=" y:* " />
+                        <xsd:field xpath=" @name " />
+                    </xsd:key>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:sequence>
+
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="as" type="xsd:string" use="optional" />
+    </xsd:complexType>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~
+    ~ boolType
+    ~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xsd:complexType name="boolType">
+        <xsd:sequence />
+
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="as" type="xsd:string" use="optional" />
+        <xsd:attribute name="optional" type="xsd:boolean" use="optional" default="false" />
+    </xsd:complexType>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~
+    ~ enumType
+    ~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xsd:complexType name="enumType">
+        <xsd:sequence />
+
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="as" type="xsd:string" use="optional" />
+        <xsd:attribute name="type" type="xsd:string" use="required" />
+        <xsd:attribute name="optional" type="xsd:boolean" use="optional" default="false" />
+        <xsd:attribute name="default" type="xsd:string" use="optional" />
+    </xsd:complexType>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~
+    ~ intType
+    ~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xsd:complexType name="intType">
+        <xsd:sequence />
+
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="as" type="xsd:string" use="optional" />
+        <xsd:attribute name="key" type="xsd:boolean" use="optional" default="false" />
+        <xsd:attribute name="optional" type="xsd:boolean" use="optional" default="false" />
+        <xsd:attribute name="default" type="xsd:int" use="optional" />
+    </xsd:complexType>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~
+    ~ stringType
+    ~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xsd:complexType name="stringType">
+        <xsd:sequence>
+            <xsd:element name="regex" minOccurs="0">
+                <xsd:complexType>
+                    <xsd:attribute name="pattern" type="xsd:string" use="required" />
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="as" type="xsd:string" use="optional" />
+        <xsd:attribute name="key" type="xsd:boolean" use="optional" default="false" />
+        <xsd:attribute name="optional" type="xsd:boolean" use="optional" default="false" />
+        <xsd:attribute name="default" type="xsd:string" use="optional" />
+    </xsd:complexType>
+
+</xsd:schema>
