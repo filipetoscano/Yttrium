@@ -1,0 +1,54 @@
+﻿using System;
+using System.Xml;
+using System.Xml.Xsl;
+
+namespace Yttrium.Xslt
+{
+    class Program
+    {
+        static void Main( string[] args )
+        {
+            /*
+             *
+             */
+            CommandLine cl = new CommandLine();
+
+            if ( cl.Parse( args ) == false )
+                Environment.Exit( 1001 );
+
+            if ( cl.Help == true )
+            {
+                cl.HelpShow();
+                Environment.Exit( 1002 );
+            }
+
+            Console.WriteLine( cl.InputFile );
+            Console.WriteLine( cl.TransformFile );
+            Console.WriteLine( cl.OutputFile );
+
+
+            /*
+             *
+             */
+            XmlDocument idoc = new XmlDocument();
+            idoc.Load( cl.InputFile );
+
+            XmlResolver resolver = new XmlUrlResolver();
+
+            XsltSettings settings = new XsltSettings();
+            settings.EnableDocumentFunction = true;
+            settings.EnableScript = true;
+
+            XslCompiledTransform xslt = new XslCompiledTransform();
+            xslt.Load( cl.TransformFile, settings, resolver );
+
+            using ( XmlWriter xw = XmlWriter.Create( cl.OutputFile ) )
+            {
+                XsltArgumentList xargs = new XsltArgumentList();
+
+                XmlReader xr = XmlReader.Create( cl.InputFile );
+                xslt.Transform( xr, xargs, xw, resolver );
+            }
+        }
+    }
+}
