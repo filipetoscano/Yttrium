@@ -90,6 +90,7 @@ namespace </xsl:text>
         <xsl:text>";
 
             Registration.RegisterCustomTool( "</xsl:text>
+        <xsl:value-of select=" ../prefix " />
         <xsl:value-of select=" @name " />
         <xsl:text>", category, type, desc );
         }</xsl:text>
@@ -108,6 +109,7 @@ namespace </xsl:text>
         <xsl:text> );
 
             Registration.UnregisterCustomTool( "</xsl:text>
+        <xsl:value-of select=" ../prefix " />
         <xsl:value-of select=" @name " />
         <xsl:text>", category, type );
         }</xsl:text>

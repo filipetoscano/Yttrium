@@ -131,7 +131,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="Tools.xml">
-      <Generator>XsltTool</Generator>
+      <Generator>YXsltTool</Generator>
       <LastGenOutput>Tools.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>

@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 namespace Yttrium.VisualStudio
 {
     [ComVisible( true )]
-    [Guid( "bc18e15c-b63b-4dfc-b993-a94d1dd11664" )]
+    [Guid( "d607f2cd-936b-4766-81cb-54adcbecbd43" )]
     public partial class ConfigGenTool : BaseTool
     {
         [ComRegisterFunction]
@@ -19,7 +19,7 @@ namespace Yttrium.VisualStudio
             Type type = typeof( ConfigGenTool );
             string desc = "Configuration class generation tool";
 
-            Registration.RegisterCustomTool( "ConfigGenTool", category, type, desc );
+            Registration.RegisterCustomTool( "YConfigGenTool", category, type, desc );
         }
 
         [ComUnregisterFunction]
@@ -29,12 +29,12 @@ namespace Yttrium.VisualStudio
             Guid category = Registration.CSharpCategoryGuid;
             Type type = typeof( ConfigGenTool );
 
-            Registration.UnregisterCustomTool( "ConfigGenTool", category, type );
+            Registration.UnregisterCustomTool( "YConfigGenTool", category, type );
         }
     }
 
     [ComVisible( true )]
-    [Guid( "af375fa8-e16a-49db-a0aa-672b7b8c3f36" )]
+    [Guid( "25ad5f8e-42cc-4e00-8edb-99acbb2dfc28" )]
     public partial class FileGetTool : BaseTool
     {
         [ComRegisterFunction]
@@ -45,7 +45,7 @@ namespace Yttrium.VisualStudio
             Type type = typeof( FileGetTool );
             string desc = "Simplifies downloading files.";
 
-            Registration.RegisterCustomTool( "FileGetTool", category, type, desc );
+            Registration.RegisterCustomTool( "YFileGetTool", category, type, desc );
         }
 
         [ComUnregisterFunction]
@@ -55,12 +55,12 @@ namespace Yttrium.VisualStudio
             Guid category = Registration.CSharpCategoryGuid;
             Type type = typeof( FileGetTool );
 
-            Registration.UnregisterCustomTool( "FileGetTool", category, type );
+            Registration.UnregisterCustomTool( "YFileGetTool", category, type );
         }
     }
 
     [ComVisible( true )]
-    [Guid( "69466aa6-8409-4d15-9b7e-69b3a19c2686" )]
+    [Guid( "03fbc084-5c54-4a98-96ca-34133dd8f383" )]
     public partial class ResxErrorTool : BaseTool
     {
         [ComRegisterFunction]
@@ -71,7 +71,7 @@ namespace Yttrium.VisualStudio
             Type type = typeof( ResxErrorTool );
             string desc = "Supports ResxActorException asset generation";
 
-            Registration.RegisterCustomTool( "ResxErrorTool", category, type, desc );
+            Registration.RegisterCustomTool( "YResxErrorTool", category, type, desc );
         }
 
         [ComUnregisterFunction]
@@ -81,12 +81,12 @@ namespace Yttrium.VisualStudio
             Guid category = Registration.CSharpCategoryGuid;
             Type type = typeof( ResxErrorTool );
 
-            Registration.UnregisterCustomTool( "ResxErrorTool", category, type );
+            Registration.UnregisterCustomTool( "YResxErrorTool", category, type );
         }
     }
 
     [ComVisible( true )]
-    [Guid( "283bcca6-42f7-486a-9ac6-956385dc9338" )]
+    [Guid( "832b2379-8ac9-4ad5-8f71-8910cb6d3149" )]
     public partial class ResxExceptionTool : BaseTool
     {
         [ComRegisterFunction]
@@ -97,7 +97,7 @@ namespace Yttrium.VisualStudio
             Type type = typeof( ResxExceptionTool );
             string desc = "Generates ResxException derived classes";
 
-            Registration.RegisterCustomTool( "ResxExceptionTool", category, type, desc );
+            Registration.RegisterCustomTool( "YResxExceptionTool", category, type, desc );
         }
 
         [ComUnregisterFunction]
@@ -107,12 +107,12 @@ namespace Yttrium.VisualStudio
             Guid category = Registration.CSharpCategoryGuid;
             Type type = typeof( ResxExceptionTool );
 
-            Registration.UnregisterCustomTool( "ResxExceptionTool", category, type );
+            Registration.UnregisterCustomTool( "YResxExceptionTool", category, type );
         }
     }
 
     [ComVisible( true )]
-    [Guid( "384814a8-0c01-49f5-b934-c304bd0d854c" )]
+    [Guid( "80392f8e-3396-4043-abd1-9da68f63ac8d" )]
     public partial class WsdlTool : BaseTool
     {
         [ComRegisterFunction]
@@ -123,7 +123,7 @@ namespace Yttrium.VisualStudio
             Type type = typeof( WsdlTool );
             string desc = "Generates a proxy file";
 
-            Registration.RegisterCustomTool( "WsdlTool", category, type, desc );
+            Registration.RegisterCustomTool( "YWsdlTool", category, type, desc );
         }
 
         [ComUnregisterFunction]
@@ -133,12 +133,12 @@ namespace Yttrium.VisualStudio
             Guid category = Registration.CSharpCategoryGuid;
             Type type = typeof( WsdlTool );
 
-            Registration.UnregisterCustomTool( "WsdlTool", category, type );
+            Registration.UnregisterCustomTool( "YWsdlTool", category, type );
         }
     }
 
     [ComVisible( true )]
-    [Guid( "3ad049bc-27e0-4e4c-b225-247c62f554b5" )]
+    [Guid( "e0dff0ac-0924-48e2-8f14-65f7077996c2" )]
     public partial class XsdTool : BaseTool
     {
         [ComRegisterFunction]
@@ -149,7 +149,7 @@ namespace Yttrium.VisualStudio
             Type type = typeof( XsdTool );
             string desc = "Runs xsd.exe command-line tool over schema.";
 
-            Registration.RegisterCustomTool( "XsdTool", category, type, desc );
+            Registration.RegisterCustomTool( "YXsdTool", category, type, desc );
         }
 
         [ComUnregisterFunction]
@@ -159,12 +159,12 @@ namespace Yttrium.VisualStudio
             Guid category = Registration.CSharpCategoryGuid;
             Type type = typeof( XsdTool );
 
-            Registration.UnregisterCustomTool( "XsdTool", category, type );
+            Registration.UnregisterCustomTool( "YXsdTool", category, type );
         }
     }
 
     [ComVisible( true )]
-    [Guid( "027cef63-68b2-43e0-ba77-fe14d1bfe870" )]
+    [Guid( "288117e1-c244-4d0d-81fd-9d5f29e28041" )]
     public partial class XsltTool : BaseTool
     {
         [ComRegisterFunction]
@@ -175,7 +175,7 @@ namespace Yttrium.VisualStudio
             Type type = typeof( XsltTool );
             string desc = "XSLT transformer";
 
-            Registration.RegisterCustomTool( "XsltTool", category, type, desc );
+            Registration.RegisterCustomTool( "YXsltTool", category, type, desc );
         }
 
         [ComUnregisterFunction]
@@ -185,7 +185,7 @@ namespace Yttrium.VisualStudio
             Guid category = Registration.CSharpCategoryGuid;
             Type type = typeof( XsltTool );
 
-            Registration.UnregisterCustomTool( "XsltTool", category, type );
+            Registration.UnregisterCustomTool( "YXsltTool", category, type );
         }
     }
 }

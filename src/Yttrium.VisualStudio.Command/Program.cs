@@ -27,17 +27,20 @@ namespace Yttrium.VisualStudio.Command
 
 
             /*
-             * TODO: We should generate this list based on reflection, so
-             * that it isn't necessary to also update this list all the time.
+             *
              */
-            List<string> tools = new List<string>();
-            tools.Add( "ConfigGenTool" );
-            tools.Add( "FileGetTool" );
-            tools.Add( "ResxErrorTool" );
-            tools.Add( "ResxExceptionTool" );
-            tools.Add( "WsdlTool" );
-            tools.Add( "XsdTool" );
-            tools.Add( "XsltTool" );
+            Type baseType = typeof( BaseTool );
+
+            var rs = from a in AppDomain.CurrentDomain.GetAssemblies()
+                     from t in a.GetTypes()
+                     where t.IsAbstract == false
+                     where baseType.IsAssignableFrom( t ) == true
+                     select t;
+
+            Dictionary<string, Type> tools = new Dictionary<string, Type>();
+
+            foreach ( var t in rs )
+                tools.Add( "Y" + t.Name, t );
 
 
             /*
@@ -56,8 +59,19 @@ namespace Yttrium.VisualStudio.Command
         /// </summary>
         /// <param name="cl">Command-line.</param>
         /// <param name="tools">List of custom tools.</param>
-        private static void RunProject( CommandLine cl, List<string> tools )
+        private static void RunProject( CommandLine cl, Dictionary<string, Type> tools )
         {
+            #region Validations
+
+            if ( cl == null )
+                throw new ArgumentNullException( nameof( cl ) );
+
+            if ( tools == null )
+                throw new ArgumentNullException( nameof( tools ) );
+
+            #endregion
+
+
             /*
              *
              */
@@ -76,7 +90,7 @@ namespace Yttrium.VisualStudio.Command
                 string relativePath = contentElem.Attributes[ "Include" ].Value;
                 string tool = contentElem.SelectSingleNode( " ns:Generator ", manager ).InnerText;
 
-                if ( tools.FirstOrDefault( t => t == tool ) == null )
+                if ( tools.ContainsKey( tool ) == false )
                     continue;
 
                 string fullName = Path.Combine(
@@ -89,7 +103,7 @@ namespace Yttrium.VisualStudio.Command
                 Console.WriteLine( "f={0} ns={1} t={2}", relativePath, ns, tool );
 
                 if ( cl.DryRun == false )
-                    RunTool( tool, file, ns );
+                    RunTool( tools, tool, file, ns );
             }
         }
 
@@ -110,21 +124,32 @@ namespace Yttrium.VisualStudio.Command
         /// </summary>
         /// <param name="cl">Command-line.</param>
         /// <param name="tools">List of custom tools.</param>
-        public static void RunFile( CommandLine cl, List<string> tools )
+        public static void RunFile( CommandLine cl, Dictionary<string, Type> tools )
         {
+            #region Validations
+
+            if ( cl == null )
+                throw new ArgumentNullException( nameof( cl ) );
+
+            if ( tools == null )
+                throw new ArgumentNullException( nameof( tools ) );
+
+            #endregion
+
+
             /*
              * .Tool
              */
+            var rs = tools.Where( t => t.Key.ToLowerInvariant() == cl.Tool.ToLowerInvariant() );
 
-
-            string tool = tools.FirstOrDefault( t => t.ToLowerInvariant() == cl.Tool.ToLowerInvariant() );
-
-            if ( tool == null )
+            if ( rs.Count() == 0 )
             {
                 Console.Error.WriteLine( "error: tool parameter is invalid, tool must be one of: " );
                 Console.Error.WriteLine( string.Join( ", ", tools ) );
                 Environment.Exit( 1003 );
             }
+
+            string tool = rs.First().Key;
 
 
             /*
@@ -167,13 +192,31 @@ namespace Yttrium.VisualStudio.Command
              * 
              */
             if ( cl.DryRun == false )
-                RunTool( tool, file, ns );
+                RunTool( tools, tool, file, ns );
         }
 
 
-        private static void RunTool( string tool, FileInfo file, string ns )
+        private static void RunTool( Dictionary<string, Type> tools, string tool, FileInfo file, string ns )
         {
-            BaseTool bt = (BaseTool) Activator.CreateInstance( "Yttrium.VisualStudio", "Yttrium.VisualStudio." + tool ).Unwrap();
+            #region Validations
+
+            if ( tools == null )
+                throw new ArgumentNullException( nameof( tools ) );
+
+            if ( tool == null )
+                throw new ArgumentNullException( nameof( tool ) );
+
+            if ( file == null )
+                throw new ArgumentNullException( nameof( file ) );
+
+            #endregion
+
+
+            /*
+             * 
+             */
+            Type toolType = tools[ tool ];
+            BaseTool bt = (BaseTool) Activator.CreateInstance( toolType );
 
             string content;
 
@@ -196,7 +239,7 @@ namespace Yttrium.VisualStudio.Command
              * 
              */
             string outputFile = Path.Combine( file.DirectoryName, Path.GetFileNameWithoutExtension( file.FullName ) + ".cs" );
-            File.WriteAllText( outputFile, content, Encoding.UTF8 );
+            File.WriteAllText( outputFile, content, new UTF8Encoding( false ) );
         }
 
 
