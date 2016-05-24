@@ -6,30 +6,54 @@ namespace Yttrium.XmlTransform
 {
     public class CommandLine
     {
+        /// <summary>
+        /// Input file.
+        /// </summary>
         public string Input
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// XDT transform.
+        /// </summary>
         public string Transform
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Output file.
+        /// </summary>
         public string Output
         {
             get;
             private set;
         }
 
-        public bool RemoveComments
+        /// <summary>
+        /// Whether whitespace in the source file should be preserved.
+        /// </summary>
+        public bool PreserveWhitespace
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Whether to remove all comments.
+        /// </summary>
+        public bool RemoveComments 
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Display the help for the current command?
+        /// </summary>
         public bool Help
         {
             get;
@@ -50,7 +74,8 @@ namespace Yttrium.XmlTransform
                 { "o=",            v => this.Output = v },
                 { "output=",       v => this.Output = v },
 
-                { "rm-comment",    v => this.RemoveComments = true },
+                { "w|preserve-whitespace", v => this.PreserveWhitespace = true },
+                { "c|rm-comment",  v => this.RemoveComments = true },
                 { "h|help",        v => this.Help = true },
             };
 

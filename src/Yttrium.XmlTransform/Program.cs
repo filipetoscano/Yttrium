@@ -71,6 +71,10 @@ namespace Yttrium.XmlTransform
              *
              */
             XmlDocument doc = new XmlDocument();
+
+            if ( cl.PreserveWhitespace == true )
+                doc.PreserveWhitespace = true;
+
             doc.Load( cl.Input );
 
 

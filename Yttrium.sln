@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yttrium.Xslt", "src\Yttrium
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yttrium.XmlTransform", "src\Yttrium.XmlTransform\Yttrium.XmlTransform.csproj", "{3EFFC359-CFDF-4A33-A20C-080A48164F0B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yttrium.FsManifest", "src\Yttrium.FsManifest\Yttrium.FsManifest.csproj", "{1771FF07-2600-40F8-8A2F-B5E16D4830FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{3EFFC359-CFDF-4A33-A20C-080A48164F0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EFFC359-CFDF-4A33-A20C-080A48164F0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EFFC359-CFDF-4A33-A20C-080A48164F0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1771FF07-2600-40F8-8A2F-B5E16D4830FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1771FF07-2600-40F8-8A2F-B5E16D4830FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1771FF07-2600-40F8-8A2F-B5E16D4830FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1771FF07-2600-40F8-8A2F-B5E16D4830FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
