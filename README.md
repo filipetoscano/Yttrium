@@ -9,6 +9,7 @@ Command-line tools.
 | dbmanifest   | Generates a manifest of the contents of the given database.
 | fsmanifest   | Generates a manifest of the contents of a filesystem directory.
 | orapack      | Combines separated functions / procedures into a single Oracle package.
+| xmltidy      | Formats XML files, saving file as UTF-8.
 | yvscmd       | Runs custom Visual Studio tools from the command-line.
 | yxdt         | Applies [XDT](https://msdn.microsoft.com/en-us/library/dd465326(v=vs.110).aspx) transformations from the commandline.
 | yxslt        | Applies XSLT transformations from the command-line.

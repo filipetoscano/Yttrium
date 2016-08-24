@@ -42,6 +42,7 @@ namespace Yttrium.Xslt
             var p = new OptionSet()
             {
                 { "i",          v => this.InputFile = v },
+                { "in=",        v => this.InputFile = v },
                 { "input=",     v => this.InputFile = v },
 
                 { "x",          v => this.TransformFile = v },
@@ -50,6 +51,7 @@ namespace Yttrium.Xslt
                 { "transform=", v => this.TransformFile = v },
 
                 { "o",          v => this.OutputFile = v },
+                { "out=",       v => this.OutputFile = v },
                 { "output=",    v => this.OutputFile = v },
 
                 { "m|multiple", v => this.MultipleOutput = true },
@@ -58,14 +60,42 @@ namespace Yttrium.Xslt
 
             List<string> extra = p.Parse( args );
 
-            //if ( extra.Count > 0 )
-            //{
-            //    Console.Error.WriteLine( "error: aditional unrecognized arguments specified." );
-            //    return false;
-            //}
+            /*
+             * Stop parsing the remainder of the options, if the user has
+             * specified that he wishes to view the help.
+             */
+            if ( this.Help == true )
+                return true;
 
 
-            // TODO
+            /*
+             * .Input
+             */
+            if ( string.IsNullOrEmpty( this.InputFile ) == true )
+            {
+                Console.Error.WriteLine( "error: input file is mandatory (use --input=INPUT)." );
+                return false;
+            }
+
+
+            /*
+             * .Transform
+             */
+            if ( string.IsNullOrEmpty( this.TransformFile ) == true )
+            {
+                Console.Error.WriteLine( "error: transformation file is mandatory (use --xslt=XSLT)." );
+                return false;
+            }
+
+
+            /*
+             * .Output
+             */
+            if ( string.IsNullOrEmpty( this.OutputFile ) == true )
+            {
+                Console.Error.WriteLine( "error: output file is mandatory (use --output=OUTPUT)." );
+                return false;
+            }
 
             return true;
         }
