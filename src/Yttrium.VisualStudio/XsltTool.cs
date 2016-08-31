@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using System.Xml.Schema;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 
@@ -41,15 +43,8 @@ namespace Yttrium.VisualStudio
             /*
              * 
              */
-            XmlNamespaceManager manager = new XmlNamespaceManager( new NameTable() );
-            manager.AddNamespace( "xsi", "http://www.w3.org/2001/XMLSchema-instance" );
-
-            XmlAttribute schemaAttr = (XmlAttribute) doc.SelectSingleNode( " /*[ @xsi:schemaLocation ] ", manager );
-
-            if ( schemaAttr != null )
-            {
-            }
-
+            FileInfo fileInfo = new FileInfo( this.FileName );
+            ValidateDocument( fileInfo, doc );
 
 
             /*
@@ -141,6 +136,94 @@ namespace Yttrium.VisualStudio
             }
 
             return sb.ToString();
+        }
+
+
+        private static void ValidateDocument( FileInfo fileInfo, XmlDocument document )
+        {
+            #region Validations
+
+            if ( fileInfo == null )
+                throw new ArgumentNullException( nameof( fileInfo ) );
+
+            if ( document == null )
+                throw new ArgumentNullException( nameof( document ) );
+
+            #endregion
+
+            /*
+             * 
+             */
+            XmlNamespaceManager manager = new XmlNamespaceManager( new NameTable() );
+            manager.AddNamespace( "xsi", "http://www.w3.org/2001/XMLSchema-instance" );
+
+            XmlNode schema = document.SelectSingleNode( " */@xsi:schemaLocation ", manager );
+
+            if ( schema == null )
+                return;
+
+
+            /*
+             * 
+             */
+            string[] parts = schema.Value.Replace( "\n", " " ).Replace( "\r", "" ).Split( new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries );
+
+            if ( (parts.Length % 2) != 0 )
+                throw new ToolException( "invalid valid in xsi:schemaLocation" );
+
+            for ( int i = 0; i < parts.Length; i += 2 )
+            {
+                string ns = parts[ i ];
+                string xsd = parts[ i + 1 ];
+
+                string xsdPath = Path.Combine( fileInfo.DirectoryName, xsd );
+
+                try
+                {
+                    document.Schemas.Add( ns, xsdPath );
+                }
+                catch ( XmlSchemaException ex )
+                {
+                    throw new ToolException( $"invalid schema '{ xsd }'", ex );
+                }
+                catch ( FileNotFoundException ex )
+                {
+                    throw new ToolException( $"invalid schema '{ xsd }'", ex );
+                }
+            }
+
+
+            /*
+             * 
+             */
+            List<string> validationErrors = new List<string>();
+
+            try
+            {
+                document.Validate(
+                    new ValidationEventHandler(
+                        delegate ( Object sender, ValidationEventArgs e )
+                        {
+                            validationErrors.Add( e.Exception.Message );
+                        }
+                    )
+                );
+            }
+            catch ( XmlSchemaValidationException ex )
+            {
+                throw new ToolException( "error validating against schema", ex );
+            }
+
+            if ( validationErrors.Count > 0 )
+            {
+                string err = string.Join( "\n", validationErrors );
+                throw new ToolException( "found the following errors during validation:\n" + err );
+            }
+
+
+            /*
+             * 
+             */
         }
     }
 }

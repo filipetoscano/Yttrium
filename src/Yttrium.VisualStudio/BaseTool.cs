@@ -97,6 +97,7 @@ namespace Yttrium.VisualStudio
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat( CultureInfo.InvariantCulture, "// Error: {0}\n", ML( error ) );
 
+            sb.Replace( "\n", Environment.NewLine );
             return sb.ToString();
         }
 
@@ -118,6 +119,7 @@ namespace Yttrium.VisualStudio
             sb.AppendFormat( CultureInfo.InvariantCulture, "//\n" );
             sb.AppendFormat( CultureInfo.InvariantCulture, "// {0}", ML( error ) );
 
+            sb.Replace( "\n", Environment.NewLine );
             return sb.ToString();
         }
 
@@ -149,6 +151,7 @@ namespace Yttrium.VisualStudio
                 ex = ex.InnerException;
             } while ( ex != null );
 
+            sb.Replace( "\n", Environment.NewLine );
             return sb.ToString();
         }
 
