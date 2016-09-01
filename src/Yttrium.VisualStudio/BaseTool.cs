@@ -143,10 +143,16 @@ namespace Yttrium.VisualStudio
 
             do
             {
-                sb.AppendFormat( CultureInfo.InvariantCulture, "//\n" );
-                sb.AppendFormat( CultureInfo.InvariantCulture, "// Type={0}\n", exception.GetType().FullName );
-                sb.AppendFormat( CultureInfo.InvariantCulture, "// Message={0}\n", ML( exception.Message ) );
-                sb.AppendFormat( CultureInfo.InvariantCulture, "// StackTrace={0}\n", ML( exception.StackTrace ) );
+                string exs = ex.ToString();
+
+                sb.Append( "//\n" );
+
+                foreach ( string l in exs.Split( '\n' ) )
+                {
+                    sb.Append( "// " );
+                    sb.Append( l.Trim( '\r' ) );
+                    sb.Append( "\n" );
+                }
 
                 ex = ex.InnerException;
             } while ( ex != null );

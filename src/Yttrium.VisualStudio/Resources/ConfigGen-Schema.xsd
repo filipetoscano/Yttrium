@@ -22,7 +22,7 @@
                             <xsd:element name="repeater" type="y:repeaterType" />
                             <xsd:element name="element" type="y:elementType">
                                 <xsd:key name="elementProperties1">
-                                    <xsd:selector xpath=" y:* " />
+                                    <xsd:selector xpath=" y:bool | y:enum | y:int | y:string " />
                                     <xsd:field xpath=" @name " />
                                 </xsd:key>
                             </xsd:element>
@@ -32,6 +32,7 @@
                             <xsd:element name="enum" type="y:enumType" />
                             <xsd:element name="int" type="y:intType" />
                             <xsd:element name="string" type="y:stringType" />
+                            <xsd:element name="keyValue" />
                         </xsd:choice>
 
                         <xsd:attribute name="name" type="xsd:string" use="required" />
@@ -54,21 +55,27 @@
     ~
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <xsd:complexType name="elementType">
-        <xsd:choice maxOccurs="unbounded">
-            <xsd:element name="repeater" type="y:repeaterType" />
-            <xsd:element name="element" type="y:elementType">
-                <xsd:key name="elementProperties2">
-                    <xsd:selector xpath=" y:* " />
-                    <xsd:field xpath=" @name " />
-                </xsd:key>
-            </xsd:element>
+        <xsd:sequence>
+            <xsd:element name="summary" type="xsd:string" minOccurs="0" />
+            <xsd:element name="remarks" type="xsd:string" minOccurs="0" />
 
-            <!-- Property -->
-            <xsd:element name="bool" type="y:boolType" />
-            <xsd:element name="enum" type="y:enumType" />
-            <xsd:element name="int" type="y:intType" />
-            <xsd:element name="string" type="y:stringType" />
-        </xsd:choice>
+            <xsd:choice maxOccurs="unbounded">
+                <xsd:element name="repeater" type="y:repeaterType" />
+                <xsd:element name="element" type="y:elementType">
+                    <xsd:key name="elementProperties2">
+                        <xsd:selector xpath=" y:bool | y:enum | y:int | y:string " />
+                        <xsd:field xpath=" @name " />
+                    </xsd:key>
+                </xsd:element>
+
+                <!-- Property -->
+                <xsd:element name="bool" type="y:boolType" />
+                <xsd:element name="enum" type="y:enumType" />
+                <xsd:element name="int" type="y:intType" />
+                <xsd:element name="string" type="y:stringType" />
+                <xsd:element name="keyValue" />
+            </xsd:choice>
+        </xsd:sequence>
 
         <xsd:attribute name="name" type="xsd:string" use="required" />
         <xsd:attribute name="as" type="xsd:string" use="optional" />
@@ -84,6 +91,9 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <xsd:complexType name="repeaterType">
         <xsd:sequence>
+            <xsd:element name="summary" type="xsd:string" minOccurs="0" />
+            <xsd:element name="remarks" type="xsd:string" minOccurs="0" />
+
             <xsd:sequence>
                 <xsd:element name="item">
                     <xsd:complexType>
@@ -91,7 +101,7 @@
                             <xsd:element name="repeater" type="y:repeaterType" />
                             <xsd:element name="element" type="y:elementType">
                                 <xsd:key name="elementProperties3">
-                                    <xsd:selector xpath=" y:* " />
+                                    <xsd:selector xpath=" y:bool | y:enum | y:int | y:string " />
                                     <xsd:field xpath=" @name " />
                                 </xsd:key>
                             </xsd:element>
@@ -101,13 +111,15 @@
                             <xsd:element name="enum" type="y:enumType" />
                             <xsd:element name="int" type="y:intType" />
                             <xsd:element name="string" type="y:stringType" />
+                            <xsd:element name="keyValue" />
                         </xsd:choice>
 
+                        <xsd:attribute name="name" type="xsd:string" use="required" />
                         <xsd:attribute name="type" type="xsd:string" use="required" />
                     </xsd:complexType>
 
                     <xsd:key name="itemProperties">
-                        <xsd:selector xpath=" y:* " />
+                        <xsd:selector xpath=" y:bool | y:enum | y:int | y:string " />
                         <xsd:field xpath=" @name " />
                     </xsd:key>
                 </xsd:element>
@@ -125,11 +137,15 @@
     ~
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <xsd:complexType name="boolType">
-        <xsd:sequence />
+        <xsd:sequence>
+            <xsd:element name="summary" type="xsd:string" minOccurs="0" />
+            <xsd:element name="remarks" type="xsd:string" minOccurs="0" />
+        </xsd:sequence>
 
         <xsd:attribute name="name" type="xsd:string" use="required" />
         <xsd:attribute name="as" type="xsd:string" use="optional" />
         <xsd:attribute name="optional" type="xsd:boolean" use="optional" default="false" />
+        <xsd:attribute name="default" type="xsd:boolean" use="optional" />
     </xsd:complexType>
 
 
@@ -139,7 +155,10 @@
     ~
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <xsd:complexType name="enumType">
-        <xsd:sequence />
+        <xsd:sequence>
+            <xsd:element name="summary" type="xsd:string" minOccurs="0" />
+            <xsd:element name="remarks" type="xsd:string" minOccurs="0" />
+        </xsd:sequence>
 
         <xsd:attribute name="name" type="xsd:string" use="required" />
         <xsd:attribute name="as" type="xsd:string" use="optional" />
@@ -155,7 +174,10 @@
     ~
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <xsd:complexType name="intType">
-        <xsd:sequence />
+        <xsd:sequence>
+            <xsd:element name="summary" type="xsd:string" minOccurs="0" />
+            <xsd:element name="remarks" type="xsd:string" minOccurs="0" />
+        </xsd:sequence>
 
         <xsd:attribute name="name" type="xsd:string" use="required" />
         <xsd:attribute name="as" type="xsd:string" use="optional" />
@@ -172,6 +194,9 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <xsd:complexType name="stringType">
         <xsd:sequence>
+            <xsd:element name="summary" type="xsd:string" minOccurs="0" />
+            <xsd:element name="remarks" type="xsd:string" minOccurs="0" />
+
             <xsd:element name="regex" minOccurs="0">
                 <xsd:complexType>
                     <xsd:attribute name="pattern" type="xsd:string" use="required" />

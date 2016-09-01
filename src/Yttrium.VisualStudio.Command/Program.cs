@@ -227,9 +227,7 @@ namespace Yttrium.VisualStudio.Command
             catch ( Exception ex )
             {
                 Console.Error.WriteLine( "error: unhandled exception from tool." );
-                Console.Error.WriteLine( ex.GetType().FullName );
-                Console.Error.WriteLine( ex.Message );
-                Console.Error.WriteLine( ex.StackTrace );
+                Console.Error.WriteLine( ex.ToString() );
                 Environment.Exit( 1006 );
                 return;
             }
