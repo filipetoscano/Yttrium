@@ -60,6 +60,16 @@ namespace Yttrium.Xslt
 
             List<string> extra = p.Parse( args );
 
+            if ( extra.Count > 0 )
+                this.InputFile = extra[ 0 ];
+
+            if ( extra.Count > 1 )
+                this.TransformFile = extra[ 1 ];
+
+            if ( extra.Count > 2 )
+                this.OutputFile = extra[ 2 ];
+
+
             /*
              * Stop parsing the remainder of the options, if the user has
              * specified that he wishes to view the help.
@@ -103,7 +113,7 @@ namespace Yttrium.Xslt
 
         public void HelpShow()
         {
-            throw new NotImplementedException();
+            Console.WriteLine( "usage: yxslt [INPUT] [XSLT] [OUTPUT]" );
         }
     }
 }

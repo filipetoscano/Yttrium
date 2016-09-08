@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml;
 using System.Xml.Xsl;
 
@@ -22,10 +23,6 @@ namespace Yttrium.Xslt
                 Environment.Exit( 1002 );
             }
 
-            Console.WriteLine( cl.InputFile );
-            Console.WriteLine( cl.TransformFile );
-            Console.WriteLine( cl.OutputFile );
-
 
             /*
              *
@@ -42,12 +39,25 @@ namespace Yttrium.Xslt
             XslCompiledTransform xslt = new XslCompiledTransform();
             xslt.Load( cl.TransformFile, settings, resolver );
 
-            using ( XmlWriter xw = XmlWriter.Create( cl.OutputFile ) )
+            if ( xslt.OutputSettings.OutputMethod == XmlOutputMethod.Xml )
             {
-                XsltArgumentList xargs = new XsltArgumentList();
+                using ( XmlWriter xw = XmlWriter.Create( cl.OutputFile, xslt.OutputSettings ) )
+                {
+                    XsltArgumentList xargs = new XsltArgumentList();
 
-                XmlReader xr = XmlReader.Create( cl.InputFile );
-                xslt.Transform( xr, xargs, xw, resolver );
+                    XmlReader xr = XmlReader.Create( cl.InputFile );
+                    xslt.Transform( xr, xargs, xw, resolver );
+                }
+            }
+            else
+            {
+                using ( TextWriter tw = new StreamWriter( File.OpenWrite( cl.OutputFile ) ) )
+                {
+                    XsltArgumentList xargs = new XsltArgumentList();
+
+                    XmlReader xr = XmlReader.Create( cl.InputFile );
+                    xslt.Transform( xr, xargs, tw );
+                }
             }
         }
     }
