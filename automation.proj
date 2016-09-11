@@ -46,11 +46,13 @@
             <Content Include="src\Yttrium.DbConfig\bin\Release\dbconfig.exe" />
             <Content Include="src\Yttrium.DbConfig\bin\Release\dbconfig.exe.config" />
             <Content Include="src\Yttrium.DbManifest\bin\Release\dbmanifest.exe" />
+            <Content Include="src\Yttrium.FsManifest\bin\Release\fsmanifest.exe" />
             <Content Include="src\Yttrium.OraPack\bin\Release\orapack.exe" />
             <Content Include="src\Yttrium.VisualStudio\bin\Release\Yttrium.VisualStudio.dll" />
             <Content Include="src\Yttrium.VisualStudio.Command\bin\Release\yvscmd.exe" />
             <Content Include="src\Yttrium.XmlTidy\bin\Release\xmltidy.exe" />
             <Content Include="src\Yttrium.XmlTransform\bin\Release\yxdt.exe" />
+            <Content Include="src\Yttrium.XmlTransform\bin\Release\Microsoft.Web.XmlTransform.dll" />
             <Content Include="src\Yttrium.Xslt\bin\Release\yxslt.exe" />
         </ItemGroup>
         

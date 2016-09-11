@@ -1,5 +1,6 @@
 *.suo
 *.csproj.user
+build/
 src/**/bin/
 src/**/obj/
-packages
+packages/
