@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		automation.proj = automation.proj
 		README.md = README.md
+		yttrium.ico = yttrium.ico
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yttrium.Core", "src\Yttrium.Core\Yttrium.Core.csproj", "{C7EFF2AB-13A2-4CFE-B7DC-74224E028740}"

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: automation.proj 58 2015-07-16 20:13:27Z lft $ -->
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
     DefaultTargets="help">
 
@@ -40,18 +39,22 @@
     ~ 
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <Target Name="package">
-        <MakeDir Directories="PACKAGE" />
+        <MakeDir Directories="build" />
 
         <ItemGroup>
             <Content Include="src\Yttrium.Core\bin\Release\Yttrium.Core.dll" />
             <Content Include="src\Yttrium.DbConfig\bin\Release\dbconfig.exe" />
+            <Content Include="src\Yttrium.DbConfig\bin\Release\dbconfig.exe.config" />
             <Content Include="src\Yttrium.DbManifest\bin\Release\dbmanifest.exe" />
             <Content Include="src\Yttrium.OraPack\bin\Release\orapack.exe" />
             <Content Include="src\Yttrium.VisualStudio\bin\Release\Yttrium.VisualStudio.dll" />
             <Content Include="src\Yttrium.VisualStudio.Command\bin\Release\yvscmd.exe" />
+            <Content Include="src\Yttrium.XmlTidy\bin\Release\xmltidy.exe" />
+            <Content Include="src\Yttrium.XmlTransform\bin\Release\yxdt.exe" />
+            <Content Include="src\Yttrium.Xslt\bin\Release\yxslt.exe" />
         </ItemGroup>
         
-        <Copy SourceFiles="@(Content)" DestinationFolder="..\PACKAGE" />
+        <Copy SourceFiles="@(Content)" DestinationFolder="build" />
     </Target>
     
 </Project>
