@@ -250,7 +250,7 @@ namespace Yttrium.DbConfig
                         WO( "." );
                     }
 
-                    string outputName = OutputFileName( finfo, hasEnvironments, env, specificSuffix );
+                    string outputName = OutputFileName( finfo, hasEnvironments, env, specificSuffix, PO.SimpleOutputName );
                     TransformResult result = new TransformResult();
 
                     XsltArgumentList xsltArgs = new XsltArgumentList();
@@ -523,7 +523,7 @@ namespace Yttrium.DbConfig
         }
 
 
-        private static string OutputFileName( FileInfo fileInfo, bool hasEnvironments, string environment, string specificSuffix )
+        private static string OutputFileName( FileInfo fileInfo, bool hasEnvironments, string environment, string specificSuffix, bool simpleFileName )
         {
             #region Validations
 
@@ -559,7 +559,7 @@ namespace Yttrium.DbConfig
             /*
              * 
              */
-            if ( hasEnvironments == true )
+            if ( simpleFileName == false && hasEnvironments == true )
             {
                 string suffixFormat = ConfigurationManager.AppSettings[ "Environment.FileNameSuffix" ];
 
