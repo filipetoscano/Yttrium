@@ -80,10 +80,15 @@ namespace Yttrium.VisualStudio
             /*
              * 
              */
+            Uri fileUri = new Uri( inputFile.FullName );
+            Uri directoryUri = new Uri( inputFile.DirectoryName );
+
             XsltArgumentList args = new XsltArgumentList();
             args.AddParam( "ToolVersion", "", Assembly.GetExecutingAssembly().GetName( false ).Version.ToString( 4 ) );
             args.AddParam( "FileName", "", rawName );
             args.AddParam( "FullFileName", "", inputFile.FullName );
+            args.AddParam( "UriFileName", "", fileUri.AbsoluteUri );
+            args.AddParam( "UriDirectory", "", directoryUri.AbsoluteUri );
             args.AddParam( "Namespace", "", this.FileNameSpace );
 
             args.AddExtensionObject( "urn:eo-util", new XsltExtensionObject() );
