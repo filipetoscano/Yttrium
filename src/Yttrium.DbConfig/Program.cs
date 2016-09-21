@@ -298,7 +298,7 @@ namespace Yttrium.DbConfig
                     }
                     else
                     {
-                        using ( TextWriter tw = new StreamWriter( outputName ) )
+                        using ( TextWriter tw = new StreamWriter( outputName, false, Encoding.UTF8 ) )
                         {
                             xslt.Transform( doc, xsltArgs, tw );
                         }
@@ -350,7 +350,7 @@ namespace Yttrium.DbConfig
                 {
                     if ( outputName != null )
                     {
-                        File.WriteAllText( outputName, sb.ToString() );
+                        File.WriteAllText( outputName, sb.ToString(), Encoding.UTF8 );
                         Console.Write( "^" );
                     }
 
@@ -365,7 +365,7 @@ namespace Yttrium.DbConfig
 
             if ( outputName != null )
             {
-                File.WriteAllText( outputName, sb.ToString() );
+                File.WriteAllText( outputName, sb.ToString(), Encoding.UTF8 );
                 Console.Write( "^" );
             }
         }
