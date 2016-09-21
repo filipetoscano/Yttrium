@@ -25,6 +25,7 @@ namespace </xsl:text>
         <xsl:value-of select=" $Namespace " />
         <xsl:text>
 {
+    /// &lt;summary /&gt;
     public static class ER
     {</xsl:text>
 

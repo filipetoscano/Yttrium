@@ -12,6 +12,11 @@
     <xsl:param name="FullFileName" />
     <xsl:param name="Namespace" />
 
+    <xsl:variable name="NewLine">
+        <xsl:text>
+</xsl:text>
+    </xsl:variable>
+
 
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ~
@@ -38,12 +43,18 @@ namespace </xsl:text>
 
     <xsl:template match=" p:add ">
         <xsl:if test=" position() > 1 ">
-            <xsl:text>
-</xsl:text>
+            <xsl:value-of select=" $NewLine " />
+            <xsl:value-of select=" $NewLine " />
         </xsl:if>
 
-        <xsl:text>
-    [Serializable]
+        <xsl:value-of select=" $NewLine " />
+        <xsl:call-template name="p:summary">
+            <xsl:with-param name="indent" select=" '    ' " />
+        </xsl:call-template>
+        <xsl:call-template name="p:remarks">
+            <xsl:with-param name="indent" select=" '    ' " />
+        </xsl:call-template>
+        <xsl:text>    [Serializable]
     [Resx( "</xsl:text>
         <xsl:value-of select=" $Namespace " />
         <xsl:text>.ER" )]
@@ -51,6 +62,7 @@ namespace </xsl:text>
         <xsl:value-of select=" @name " />
         <xsl:text> : ResxActorException
     {
+        /// &lt;summary /&gt;
         public </xsl:text>
         <xsl:value-of select=" @name " />
         <xsl:text>( string code )
@@ -58,6 +70,8 @@ namespace </xsl:text>
         {
         }
 
+
+        /// &lt;summary /&gt;
         public </xsl:text>
         <xsl:value-of select=" @name " />
         <xsl:text>( string code, Exception innerException )
@@ -65,6 +79,8 @@ namespace </xsl:text>
         {
         }
 
+
+        /// &lt;summary /&gt;
         public </xsl:text>
         <xsl:value-of select=" @name " />
         <xsl:text>( string code, params object[] args )
@@ -72,6 +88,8 @@ namespace </xsl:text>
         {
         }
 
+
+        /// &lt;summary /&gt;
         public </xsl:text>
         <xsl:value-of select=" @name " />
         <xsl:text>( string code, Exception innerException, params object[] args )
@@ -79,6 +97,53 @@ namespace </xsl:text>
         {
         }
     }</xsl:text>
+    </xsl:template>
+
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~
+    ~ y:summary/
+    ~ y:remarks/
+    ~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <xsl:template name="p:summary">
+        <xsl:param name="indent" select=" '        ' " />
+
+        <xsl:choose>
+            <xsl:when test=" p:summary ">
+                <xsl:value-of select=" $indent " />
+                <xsl:text>/// &lt;summary&gt;</xsl:text>
+                <!-- This new line not needed! -->
+
+                <xsl:value-of select=" fn:ToWrap( p:summary/text(), concat( $indent, '/// ' ), 80 ) "/>
+                <xsl:value-of select=" $NewLine " />
+
+                <xsl:value-of select=" $indent " />
+                <xsl:text>/// &lt;/summary&gt;</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select=" $indent " />
+                <xsl:text>/// &lt;summary /&gt;</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:value-of select=" $NewLine " />
+    </xsl:template>
+
+    <xsl:template name="p:remarks">
+        <xsl:param name="indent" select=" '        ' " />
+
+        <xsl:if test=" p:remarks ">
+            <xsl:value-of select=" $indent " />
+            <xsl:text>/// &lt;remarks&gt;</xsl:text>
+            <!-- This new line not needed! -->
+
+            <xsl:value-of select=" fn:ToWrap( p:remarks/text(), concat( $indent, '/// ' ), 80 ) "/>
+            <xsl:value-of select=" $NewLine " />
+
+            <xsl:value-of select=" $indent " />
+            <xsl:text>/// &lt;/remarks&gt;</xsl:text>
+            <xsl:value-of select=" $NewLine " />
+        </xsl:if>
     </xsl:template>
 
 
