@@ -18,7 +18,7 @@ namespace Yttrium.VisualStudio
             /*
              * Finding out where Visual Studio places 
              */
-            string basePath = @"c:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools";
+            string basePath = @"C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.1 Tools";
 
 
             /*
