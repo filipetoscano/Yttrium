@@ -115,37 +115,62 @@ namespace Yttrium.Configurator
                     return;
                 }
 
-                Description.fileType fileType = f.type;
-
-                if ( fileType == Description.fileType.auto )
+                if ( f.type == Description.fileType.auto )
                 {
                     if ( f.to.EndsWith( ".xml", StringComparison.OrdinalIgnoreCase ) )
-                        fileType = Description.fileType.xml;
+                        f.type = Description.fileType.xml;
                     else if ( f.to.EndsWith( ".json", StringComparison.OrdinalIgnoreCase ) )
-                        fileType = Description.fileType.json;
+                        f.type = Description.fileType.json;
                     else
-                        fileType = Description.fileType.text;
+                        f.type = Description.fileType.text;
                 }
 
                 Console.Write( f.from );
 
-                switch ( fileType )
+                try
                 {
-                    case Description.fileType.json:
-                        ReplaceJson( values, f.from, f.to );
-                        break;
-
-                    case Description.fileType.text:
-                        ReplaceText( values, f.from, f.to );
-                        break;
-
-                    case Description.fileType.xml:
-                        ReplaceXml( values, f.from, f.to );
-                        break;
+                    ReplaceFile( values, f );
+                }
+                catch ( Exception ex )
+                {
+                    Console.Error.WriteLine( " ERROR" );
+                    Console.Error.WriteLine( ex.ToString() );
+                    Environment.ExitCode = 102;
+                    return;
                 }
 
                 Console.Write( " --> " );
                 Console.WriteLine( f.to );
+            }
+        }
+
+
+        /// <summary />
+        private static void ReplaceFile( Dictionary<string, string> values, Description.file file )
+        {
+            #region Validations
+
+            if ( values == null )
+                throw new ArgumentNullException( nameof( values ) );
+
+            if ( file == null )
+                throw new ArgumentNullException( nameof( file ) );
+
+            #endregion
+
+            switch ( file.type )
+            {
+                case Description.fileType.json:
+                    ReplaceJson( values, file.from, file.to );
+                    break;
+
+                case Description.fileType.text:
+                    ReplaceText( values, file.from, file.to );
+                    break;
+
+                case Description.fileType.xml:
+                    ReplaceXml( values, file.from, file.to );
+                    break;
             }
         }
 
