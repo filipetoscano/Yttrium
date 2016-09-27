@@ -1,7 +1,8 @@
 *.suo
 *.csproj.user
+.vs/
 build/
+packages/
 src/**/bin/
 src/**/obj/
-packages/
 src/Yttrium.Configurator/Description/Configurator.cs

@@ -43,6 +43,7 @@
 
         <ItemGroup>
             <Content Include="src\Yttrium.Configurator\bin\Release\yconfig.exe" />
+            <Content Include="src\Yttrium.Configurator\bin\Release\Newtonsoft.Json.dll" />
             <Content Include="src\Yttrium.Core\bin\Release\Yttrium.Core.dll" />
             <Content Include="src\Yttrium.DbConfig\bin\Release\dbconfig.exe" />
             <Content Include="src\Yttrium.DbConfig\bin\Release\dbconfig.exe.config" />

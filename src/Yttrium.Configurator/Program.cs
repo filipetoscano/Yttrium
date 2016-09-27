@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -106,7 +108,7 @@ namespace Yttrium.Configurator
              */
             foreach ( var f in config.files )
             {
-                if ( File.Exists( f.to ) == false )
+                if ( File.Exists( f.from ) == false )
                 {
                     Console.Error.WriteLine( "error: could not load file '{0}'.", f.to );
                     Environment.ExitCode = 101;
@@ -119,7 +121,7 @@ namespace Yttrium.Configurator
                 {
                     if ( f.to.EndsWith( ".xml", StringComparison.OrdinalIgnoreCase ) )
                         fileType = Description.fileType.xml;
-                    else if ( f.to.EndsWith( ".js", StringComparison.OrdinalIgnoreCase ) )
+                    else if ( f.to.EndsWith( ".json", StringComparison.OrdinalIgnoreCase ) )
                         fileType = Description.fileType.json;
                     else
                         fileType = Description.fileType.text;
@@ -151,7 +153,27 @@ namespace Yttrium.Configurator
         /// <summary />
         private static void ReplaceJson( Dictionary<string, string> values, string from, string to )
         {
-            throw new NotImplementedException();
+            string content = File.ReadAllText( from );
+            JObject json = JObject.Parse( content );
+
+            foreach ( JToken node in json.Descendants() )
+            {
+                if ( node.Type == JTokenType.String )
+                {
+                    JValue v = node as JValue;
+                    v.Value = ReplaceString( values, node.Value<string>() );
+                }
+            }
+
+            using ( TextWriter tw = new StreamWriter( File.OpenWrite( to ) ) )
+            {
+                JsonTextWriter jw = new JsonTextWriter( tw );
+                jw.Formatting = Formatting.Indented;
+                jw.Indentation = 4;
+                jw.IndentChar = ' ';
+
+                json.WriteTo( jw );
+            }
         }
 
 
@@ -160,7 +182,7 @@ namespace Yttrium.Configurator
         {
             string content = File.ReadAllText( from );
 
-            content = ReplaceAll( values, content );
+            content = ReplaceString( values, content );
 
             File.WriteAllText( to, content );
         }
@@ -174,13 +196,13 @@ namespace Yttrium.Configurator
             foreach ( var node in (IEnumerable) doc.XPathEvaluate( " //@* " ) )
             {
                 XAttribute attr = node as XAttribute;
-                attr.Value = ReplaceAll( values, attr.Value );
+                attr.Value = ReplaceString( values, attr.Value );
             }
 
             foreach ( var node in (IEnumerable) doc.XPathEvaluate( " //text() " ) )
             {
                 XText attr = node as XText;
-                attr.Value = ReplaceAll( values, attr.Value );
+                attr.Value = ReplaceString( values, attr.Value );
             }
 
             doc.Save( to );
@@ -188,7 +210,7 @@ namespace Yttrium.Configurator
 
 
         /// <summary />
-        private static string ReplaceAll( Dictionary<string, string> values, string value )
+        private static string ReplaceString( Dictionary<string, string> values, string value )
         {
             #region Validations
 
