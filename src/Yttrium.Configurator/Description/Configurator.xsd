@@ -10,14 +10,7 @@
                 <xsd:element name="values">
                     <xsd:complexType>
                         <xsd:sequence>
-                            <xsd:element name="add" maxOccurs="unbounded">
-                                <xsd:complexType>
-                                    <xsd:attribute name="name" type="xsd:string" use="required" />
-                                    <xsd:attribute name="text" type="xsd:string" use="required" />
-                                    <xsd:attribute name="required" type="xsd:boolean" use="optional" default="true" />
-                                    <xsd:attribute name="default" type="xsd:string" use="optional" />
-                                </xsd:complexType>
-                            </xsd:element>
+                            <xsd:element name="add" type="tns:value" maxOccurs="unbounded" />
                         </xsd:sequence>
                     </xsd:complexType>
                 </xsd:element>
@@ -25,13 +18,7 @@
                 <xsd:element name="files">
                     <xsd:complexType>
                         <xsd:sequence>
-                            <xsd:element name="add" maxOccurs="unbounded">
-                                <xsd:complexType>
-                                    <xsd:attribute name="from" type="xsd:string" use="required" />
-                                    <xsd:attribute name="to" type="xsd:string" use="required" />
-                                    <xsd:attribute name="type" type="tns:fileType" default="auto" />
-                                </xsd:complexType>
-                            </xsd:element>
+                            <xsd:element name="add" type="tns:file" maxOccurs="unbounded" />
                         </xsd:sequence>
                     </xsd:complexType>
                 </xsd:element>
@@ -39,12 +26,25 @@
         </xsd:complexType>
     </xsd:element>
 
+    <xsd:complexType name="value">
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="text" type="xsd:string" use="required" />
+        <xsd:attribute name="required" type="xsd:boolean" use="optional" default="true" />
+        <xsd:attribute name="default" type="xsd:string" use="optional" />
+    </xsd:complexType>
+
+    <xsd:complexType name="file">
+        <xsd:attribute name="from" type="xsd:string" use="required" />
+        <xsd:attribute name="to" type="xsd:string" use="required" />
+        <xsd:attribute name="type" type="tns:fileType" default="auto" />
+    </xsd:complexType>
+
     <xsd:simpleType name="fileType">
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="auto" />
             <xsd:enumeration value="xml" />
             <xsd:enumeration value="json" />
-            <xsd:enumeration value="yaml" />
+            <xsd:enumeration value="text" />
         </xsd:restriction>
     </xsd:simpleType>
 
