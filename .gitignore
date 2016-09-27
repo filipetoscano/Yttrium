@@ -4,3 +4,4 @@ build/
 src/**/bin/
 src/**/obj/
 packages/
+src/Yttrium.Configurator/Description/Configurator.cs

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    targetNamespace="urn:yttrium/config"
+    xmlns:tns="urn:yttrium/config">
+
+    <xsd:element name="config">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="values">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="add" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:attribute name="name" type="xsd:string" use="required" />
+                                    <xsd:attribute name="text" type="xsd:string" use="required" />
+                                    <xsd:attribute name="required" type="xsd:boolean" use="optional" default="true" />
+                                    <xsd:attribute name="default" type="xsd:string" use="optional" />
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+
+                <xsd:element name="files">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="add" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:attribute name="from" type="xsd:string" use="required" />
+                                    <xsd:attribute name="to" type="xsd:string" use="required" />
+                                    <xsd:attribute name="type" type="tns:fileType" default="auto" />
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:simpleType name="fileType">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="auto" />
+            <xsd:enumeration value="xml" />
+            <xsd:enumeration value="json" />
+            <xsd:enumeration value="yaml" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>
