@@ -251,7 +251,7 @@ namespace Yttrium.Configurator
 
             foreach ( var kv in values )
             {
-                string k = "$(" + kv.Key + ")";
+                string k = "YC(" + kv.Key + ")";
                 string v = kv.Value;
 
                 formatted = formatted.Replace( k, v );
