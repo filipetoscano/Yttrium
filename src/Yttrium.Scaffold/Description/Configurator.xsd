@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    targetNamespace="urn:yttrium/scaffold"
+    xmlns:tns="urn:yttrium/scaffold">
+
+    <xsd:element name="config">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="variables">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="add" type="tns:variable" maxOccurs="unbounded" />
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+
+                <xsd:element name="values">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="date" type="tns:dateValue" maxOccurs="unbounded" />
+                            <xsd:element name="guid" type="tns:guidValue" maxOccurs="unbounded" />
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="variable">
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="text" type="xsd:string" use="required" />
+        <xsd:attribute name="required" type="xsd:boolean" use="optional" default="true" />
+        <xsd:attribute name="default" type="xsd:string" use="optional" />
+    </xsd:complexType>
+
+    <xsd:complexType name="dateValue">
+        <xsd:attribute name="name" type="xsd:NMTOKEN" />
+    </xsd:complexType>
+
+    <xsd:complexType name="guidValue">
+        <xsd:attribute name="name" type="xsd:NMTOKEN" />
+    </xsd:complexType>
+
+</xsd:schema>

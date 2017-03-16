@@ -6,3 +6,5 @@ packages/
 src/**/bin/
 src/**/obj/
 src/Yttrium.Configurator/Description/Configurator.cs
+tests/**/bin/
+tests/**/obj/
