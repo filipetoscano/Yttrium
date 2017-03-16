@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace Yttrium.Scaffold
@@ -22,7 +24,7 @@ namespace Yttrium.Scaffold
 
 
             /*
-             * #2. 
+             * #2. Argument validation.
              */
             string arg = args[ 0 ];
 
@@ -40,14 +42,19 @@ namespace Yttrium.Scaffold
                     return;
                 }
 
-                directoryTempl = arg;
+                FileInfo finfo = new FileInfo( scaffoldTempl );
+
+                scaffoldTempl = finfo.FullName;
+                directoryTempl = finfo.DirectoryName;
             }
             else if ( File.Exists( arg ) == true )
             {
                 if ( Path.GetFileName( arg ) == "yscaffold.xml" )
                 {
-                    scaffoldTempl = arg;
-                    directoryTempl = Path.GetDirectoryName( arg );
+                    FileInfo finfo = new FileInfo( arg );
+
+                    scaffoldTempl = finfo.FullName;
+                    directoryTempl = finfo.DirectoryName;
                 }
                 else
                 {
@@ -65,14 +72,7 @@ namespace Yttrium.Scaffold
 
 
             /*
-             * 
-             */
-            Console.WriteLine( scaffoldTempl );
-            Console.WriteLine( directoryTempl );
-
-
-            /*
-             * 
+             * #3. Deserialize scaffold meta
              */
             XmlSerializer ser = new XmlSerializer( typeof( Description.config ) );
             Description.config config;
@@ -94,7 +94,9 @@ namespace Yttrium.Scaffold
 
 
             /*
-             * 
+             * #4. Build list of values from:
+             *     - Prompted values;
+             *     - Generated values.
              */
             Dictionary<string, string> values = new Dictionary<string, string>();
 
@@ -117,14 +119,13 @@ namespace Yttrium.Scaffold
                     if ( string.IsNullOrWhiteSpace( value ) == true && v.required == true )
                         continue;
 
-
                     values.Add( v.name, value );
 
                     if ( v.name.ToLowerInvariant() != v.name )
                         values.Add( v.name.ToLowerInvariant(), value.ToLowerInvariant() );
 
                     if ( v.name.ToUpperInvariant() != v.name )
-                        values.Add( v.name.ToLowerInvariant(), value.ToUpperInvariant() );
+                        values.Add( v.name.ToUpperInvariant(), value.ToUpperInvariant() );
 
                     break;
                 }
@@ -134,7 +135,10 @@ namespace Yttrium.Scaffold
             {
                 foreach ( var v in config.values.date )
                 {
+                    string key = v.name;
+                    string val = DateTime.Now.ToString( "yyyy-MM-dd", CultureInfo.InvariantCulture );
 
+                    values.Add( key, val );
                 }
             }
 
@@ -142,11 +146,122 @@ namespace Yttrium.Scaffold
             {
                 foreach ( var v in config.values.guid )
                 {
-                    values.Add( v.name, Guid.NewGuid().ToString().ToLowerInvariant() );
+                    string key = v.name;
+                    string val = Guid.NewGuid().ToString().ToLowerInvariant();
+
+                    values.Add( key, val );
                 }
             }
 
 
+            /*
+             * #5. Mirror 'directoryTempl' onto current working directory.
+             */
+            var fromDir = new DirectoryInfo( directoryTempl );
+            var toDir = new DirectoryInfo( Environment.CurrentDirectory );
+
+            Mirror( values, fromDir, toDir );
+        }
+
+
+        private static void Mirror( Dictionary<string, string> values, DirectoryInfo fromDirectory, DirectoryInfo toDirectory )
+        {
+            #region Validations
+
+            if ( values == null )
+                throw new ArgumentNullException( nameof( values ) );
+
+            if ( fromDirectory == null )
+                throw new ArgumentNullException( nameof( fromDirectory ) );
+
+            if ( toDirectory == null )
+                throw new ArgumentNullException( nameof( toDirectory ) );
+
+            #endregion
+
+            foreach ( var f in fromDirectory.GetFiles() )
+            {
+                if ( f.Extension == ".exe" )
+                    continue;
+
+                if ( f.Extension == ".dll" )
+                    continue;
+
+                if ( f.Extension == ".ico" )
+                    continue;
+
+
+                string from = f.FullName;
+                string to = Path.Combine( toDirectory.FullName, ReplaceString( values, f.Name ) );
+                Console.WriteLine( "{0} -> {1}", from, to );
+
+                ReplaceText( values, from, to );
+            }
+
+
+            foreach ( var fromDir in fromDirectory.GetDirectories() )
+            {
+                if ( fromDir.Name == ".git" )
+                    continue;
+
+                string to = Path.Combine( toDirectory.FullName, ReplaceString( values, fromDir.Name ) );
+                var toDir = Directory.CreateDirectory( to );
+
+                Console.WriteLine( "D: {1}", fromDir.FullName, toDir.FullName );
+                Mirror( values, fromDir, toDir );
+            }
+        }
+
+
+
+        /// <summary />
+        private static void ReplaceText( Dictionary<string, string> values, string from, string to )
+        {
+            #region Validations
+
+            if ( values == null )
+                throw new ArgumentNullException( nameof( values ) );
+
+            if ( from == null )
+                throw new ArgumentNullException( nameof( from ) );
+
+            if ( to == null )
+                throw new ArgumentNullException( nameof( to ) );
+
+            #endregion
+
+            string content = File.ReadAllText( from, Encoding.UTF8 );
+
+            content = ReplaceString( values, content );
+
+            File.WriteAllText( to, content, Encoding.UTF8 );
+        }
+
+
+        /// <summary />
+        private static string ReplaceString( Dictionary<string, string> values, string value )
+        {
+            #region Validations
+
+            if ( values == null )
+                throw new ArgumentNullException( nameof( values ) );
+
+            #endregion
+
+            if ( value == null )
+                return null;
+
+            string formatted = value;
+
+            foreach ( var kv in values )
+            {
+                string k = "$(" + kv.Key + ")";
+                string v = kv.Value;
+
+                formatted = formatted.Replace( k, v );
+            }
+
+            return formatted;
         }
     }
 }

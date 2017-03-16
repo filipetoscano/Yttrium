@@ -18,8 +18,8 @@
                 <xsd:element name="values">
                     <xsd:complexType>
                         <xsd:sequence>
-                            <xsd:element name="date" type="tns:dateValue" maxOccurs="unbounded" />
-                            <xsd:element name="guid" type="tns:guidValue" maxOccurs="unbounded" />
+                            <xsd:element name="date" type="tns:dateValue" minOccurs="0" maxOccurs="unbounded" />
+                            <xsd:element name="guid" type="tns:guidValue" minOccurs="0" maxOccurs="unbounded" />
                         </xsd:sequence>
                     </xsd:complexType>
                 </xsd:element>
