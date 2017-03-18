@@ -28,9 +28,22 @@ namespace Yttrium.Scaffold.Description {
     [XmlRoot(Namespace="urn:yttrium/scaffold", IsNullable=false)]
     public partial class config {
         
+        private placeholder[] placeholdersField;
+        
         private variable[] variablesField;
         
         private configValues valuesField;
+        
+        /// <remarks/>
+        [XmlArrayItem("add", IsNullable=false)]
+        public placeholder[] placeholders {
+            get {
+                return this.placeholdersField;
+            }
+            set {
+                this.placeholdersField = value;
+            }
+        }
         
         /// <remarks/>
         [XmlArrayItem("add", IsNullable=false)]
@@ -50,6 +63,85 @@ namespace Yttrium.Scaffold.Description {
             }
             set {
                 this.valuesField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [GeneratedCode("xsd", "4.6.1055.0")]
+    [Serializable]
+    [DebuggerStepThrough]
+    [DesignerCategory("code")]
+    [XmlType(Namespace="urn:yttrium/scaffold")]
+    public partial class placeholder {
+        
+        private string formatField;
+        
+        /// <remarks/>
+        [XmlAttribute()]
+        public string format {
+            get {
+                return this.formatField;
+            }
+            set {
+                this.formatField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [GeneratedCode("xsd", "4.6.1055.0")]
+    [Serializable]
+    [DebuggerStepThrough]
+    [DesignerCategory("code")]
+    [XmlType(Namespace="urn:yttrium/scaffold")]
+    public partial class guidValue {
+        
+        private string nameField;
+        
+        private string findField;
+        
+        /// <remarks/>
+        [XmlAttribute()]
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [XmlAttribute()]
+        public string find {
+            get {
+                return this.findField;
+            }
+            set {
+                this.findField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [GeneratedCode("xsd", "4.6.1055.0")]
+    [Serializable]
+    [DebuggerStepThrough]
+    [DesignerCategory("code")]
+    [XmlType(Namespace="urn:yttrium/scaffold")]
+    public partial class dateValue {
+        
+        private string nameField;
+        
+        /// <remarks/>
+        [XmlAttribute()]
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
             }
         }
     }
@@ -116,50 +208,6 @@ namespace Yttrium.Scaffold.Description {
             }
             set {
                 this.defaultField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [GeneratedCode("xsd", "4.6.1055.0")]
-    [Serializable]
-    [DebuggerStepThrough]
-    [DesignerCategory("code")]
-    [XmlType(Namespace="urn:yttrium/scaffold")]
-    public partial class guidValue {
-        
-        private string nameField;
-        
-        /// <remarks/>
-        [XmlAttribute(DataType="NMTOKEN")]
-        public string name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [GeneratedCode("xsd", "4.6.1055.0")]
-    [Serializable]
-    [DebuggerStepThrough]
-    [DesignerCategory("code")]
-    [XmlType(Namespace="urn:yttrium/scaffold")]
-    public partial class dateValue {
-        
-        private string nameField;
-        
-        /// <remarks/>
-        [XmlAttribute(DataType="NMTOKEN")]
-        public string name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
             }
         }
     }

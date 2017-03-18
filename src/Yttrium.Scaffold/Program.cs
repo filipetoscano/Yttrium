@@ -4,13 +4,15 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using Yttrium.Scaffold.Description;
 
 namespace Yttrium.Scaffold
 {
     /// <summary />
     public class Program
     {
-        static void Main( string[] args )
+        /// <summary />
+        public static void Main( string[] args )
         {
             /*
              * #1. Any arguments?
@@ -119,14 +121,7 @@ namespace Yttrium.Scaffold
                     if ( string.IsNullOrWhiteSpace( value ) == true && v.required == true )
                         continue;
 
-                    values.Add( v.name, value );
-
-                    if ( v.name.ToLowerInvariant() != v.name )
-                        values.Add( v.name.ToLowerInvariant(), value.ToLowerInvariant() );
-
-                    if ( v.name.ToUpperInvariant() != v.name )
-                        values.Add( v.name.ToUpperInvariant(), value.ToUpperInvariant() );
-
+                    values.Add( config.placeholders, v.name, value );
                     break;
                 }
             }
@@ -138,7 +133,7 @@ namespace Yttrium.Scaffold
                     string key = v.name;
                     string val = DateTime.Now.ToString( "yyyy-MM-dd", CultureInfo.InvariantCulture );
 
-                    values.Add( key, val );
+                    values.Add( config.placeholders, key, val );
                 }
             }
 
@@ -149,27 +144,36 @@ namespace Yttrium.Scaffold
                     string key = v.name;
                     string val = Guid.NewGuid().ToString().ToLowerInvariant();
 
-                    values.Add( key, val );
+                    values.Add( config.placeholders, key, val );
+
+                    if ( v.find != null )
+                        values.Add( v.find, val );
                 }
             }
+
+            //foreach ( var k in values.Keys )
+            //    Console.WriteLine( "{0}={1}", k, values[ k ] );
 
 
             /*
              * #5. Mirror 'directoryTempl' onto current working directory.
              */
-            var fromDir = new DirectoryInfo( directoryTempl );
-            var toDir = new DirectoryInfo( Environment.CurrentDirectory );
+            var ctx = new ExecutionContext();
+            ctx.Values = values;
+            ctx.FromRoot = new DirectoryInfo( directoryTempl );
+            ctx.ToRoot = new DirectoryInfo( Environment.CurrentDirectory );
 
-            Mirror( values, fromDir, toDir );
+            Mirror( ctx, ctx.FromRoot, ctx.ToRoot );
         }
 
 
-        private static void Mirror( Dictionary<string, string> values, DirectoryInfo fromDirectory, DirectoryInfo toDirectory )
+
+        private static void Mirror( ExecutionContext ctx, DirectoryInfo fromDirectory, DirectoryInfo toDirectory )
         {
             #region Validations
 
-            if ( values == null )
-                throw new ArgumentNullException( nameof( values ) );
+            if ( ctx == null )
+                throw new ArgumentNullException( nameof( ctx ) );
 
             if ( fromDirectory == null )
                 throw new ArgumentNullException( nameof( fromDirectory ) );
@@ -179,43 +183,62 @@ namespace Yttrium.Scaffold
 
             #endregion
 
-            foreach ( var f in fromDirectory.GetFiles() )
+
+            /*
+             * Mirror files in current directory
+             */
+            foreach ( var file in fromDirectory.GetFiles() )
             {
-                if ( f.Extension == ".exe" )
-                    continue;
+                string fromFile = file.FullName;
+                string toFile = Path.Combine( toDirectory.FullName, ReplaceString( ctx.Values, file.Name ) );
 
-                if ( f.Extension == ".dll" )
-                    continue;
-
-                if ( f.Extension == ".ico" )
-                    continue;
-
-
-                string from = f.FullName;
-                string to = Path.Combine( toDirectory.FullName, ReplaceString( values, f.Name ) );
-                Console.WriteLine( "{0} -> {1}", from, to );
-
-                ReplaceText( values, from, to );
+                if ( file.IsBinaryFile() == true )
+                {
+                    Console.WriteLine( "  {0} *", ctx.Relative( toFile ) );
+                    File.Copy( fromFile, toFile );
+                }
+                else
+                {
+                    Console.WriteLine( "  {0}", ctx.Relative( toFile ) );
+                    FileReplaceAndCopy( ctx.Values, fromFile, toFile );
+                }
             }
 
 
-            foreach ( var fromDir in fromDirectory.GetDirectories() )
+            /*
+             * Recursively walk!
+             */
+            foreach ( var dir in fromDirectory.GetDirectories() )
             {
-                if ( fromDir.Name == ".git" )
+                if ( dir.Name == ".git" )
                     continue;
 
-                string to = Path.Combine( toDirectory.FullName, ReplaceString( values, fromDir.Name ) );
+                if ( dir.Name == ".vs" )
+                    continue;
+
+                if ( dir.Name == "bin" && fromDirectory.FullName != ctx.FromRoot.FullName )
+                    continue;
+
+                if ( dir.Name == "packages" && fromDirectory.FullName == ctx.FromRoot.FullName )
+                    continue;
+
+                if ( dir.Name == "obj" )
+                    continue;
+
+                if ( dir.Name == "pkg" )
+                    continue;
+
+                string to = Path.Combine( toDirectory.FullName, ReplaceString( ctx.Values, dir.Name ) );
                 var toDir = Directory.CreateDirectory( to );
 
-                Console.WriteLine( "D: {1}", fromDir.FullName, toDir.FullName );
-                Mirror( values, fromDir, toDir );
+                Console.WriteLine( "D {0}", ctx.Relative( toDir.FullName ) );
+                Mirror( ctx, dir, toDir );
             }
         }
 
 
-
         /// <summary />
-        private static void ReplaceText( Dictionary<string, string> values, string from, string to )
+        private static void FileReplaceAndCopy( Dictionary<string, string> values, string from, string to )
         {
             #region Validations
 
@@ -230,7 +253,9 @@ namespace Yttrium.Scaffold
 
             #endregion
 
-            string content = File.ReadAllText( from, Encoding.UTF8 );
+            string content;
+
+            content = File.ReadAllText( from, Encoding.UTF8 );
 
             content = ReplaceString( values, content );
 
@@ -255,7 +280,7 @@ namespace Yttrium.Scaffold
 
             foreach ( var kv in values )
             {
-                string k = "$(" + kv.Key + ")";
+                string k = kv.Key;
                 string v = kv.Value;
 
                 formatted = formatted.Replace( k, v );

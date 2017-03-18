@@ -5,9 +5,31 @@
     xmlns:tns="urn:yttrium/scaffold">
 
     <xsd:element name="config">
+        <xsd:annotation>
+            <xsd:documentation>Describes a scaffolding template.</xsd:documentation>
+        </xsd:annotation>
+
         <xsd:complexType>
             <xsd:sequence>
+                <xsd:element name="placeholders">
+                    <xsd:annotation>
+                        <xsd:documentation>Enumerates the 'formats' of the value keys which will be replaced.</xsd:documentation>
+                        <xsd:appinfo>Note: The format is *NOT* .ToUpper/.ToLower!</xsd:appinfo>
+                    </xsd:annotation>
+
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="add" type="tns:placeholder" maxOccurs="unbounded" />
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+
+
                 <xsd:element name="variables">
+                    <xsd:annotation>
+                        <xsd:documentation>List of values which the user needs to provide interactively.</xsd:documentation>
+                    </xsd:annotation>
+
                     <xsd:complexType>
                         <xsd:sequence>
                             <xsd:element name="add" type="tns:variable" maxOccurs="unbounded" />
@@ -15,11 +37,20 @@
                     </xsd:complexType>
                 </xsd:element>
 
+
                 <xsd:element name="values">
+                    <xsd:annotation>
+                        <xsd:documentation>List of values which are calculated in runtime, on demand.</xsd:documentation>
+                    </xsd:annotation>
+
                     <xsd:complexType>
                         <xsd:sequence>
                             <xsd:element name="date" type="tns:dateValue" minOccurs="0" maxOccurs="unbounded" />
-                            <xsd:element name="guid" type="tns:guidValue" minOccurs="0" maxOccurs="unbounded" />
+                            <xsd:element name="guid" type="tns:guidValue" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:annotation>
+                                    <xsd:documentation>Unique Identifier, in GUID format.</xsd:documentation>
+                                </xsd:annotation>
+                            </xsd:element>
                         </xsd:sequence>
                     </xsd:complexType>
                 </xsd:element>
@@ -27,19 +58,35 @@
         </xsd:complexType>
     </xsd:element>
 
+
+    <xsd:complexType name="placeholder">
+        <xsd:attribute name="format" type="xsd:string" use="required" />
+    </xsd:complexType>
+
+
     <xsd:complexType name="variable">
-        <xsd:attribute name="name" type="xsd:string" use="required" />
+        <xsd:attribute name="name" type="tns:valueName" use="required" />
         <xsd:attribute name="text" type="xsd:string" use="required" />
         <xsd:attribute name="required" type="xsd:boolean" use="optional" default="true" />
         <xsd:attribute name="default" type="xsd:string" use="optional" />
     </xsd:complexType>
 
-    <xsd:complexType name="dateValue">
-        <xsd:attribute name="name" type="xsd:NMTOKEN" />
-    </xsd:complexType>
+
+    <xsd:simpleType name="valueName">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[A-Z][A-Za-z0-9]*" />
+        </xsd:restriction>
+    </xsd:simpleType>
+
 
     <xsd:complexType name="guidValue">
-        <xsd:attribute name="name" type="xsd:NMTOKEN" />
+        <xsd:attribute name="name" type="tns:valueName" use="required" />
+        <xsd:attribute name="find" type="xsd:string" use="optional" />
+    </xsd:complexType>
+
+
+    <xsd:complexType name="dateValue">
+        <xsd:attribute name="name" type="tns:valueName" use="required" />
     </xsd:complexType>
 
 </xsd:schema>
