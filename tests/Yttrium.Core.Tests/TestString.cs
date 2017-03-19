@@ -10,7 +10,7 @@ namespace Yttrium.Core.Tests
             [Option( Short = 'a' )]
             public string PropertyA { get; set; }
 
-            [Option( Short = 'B', Long = "propb" )]
+            [Option( Short = 'b', Long = "propb" )]
             public string PropertyB { get; set; }
 
             public string PropertyC { get; set; }
