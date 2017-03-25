@@ -253,13 +253,14 @@ namespace Yttrium.Scaffold
 
             #endregion
 
+            Encoding utf8nobom = new UTF8Encoding( false );
             string content;
 
             content = File.ReadAllText( from, Encoding.UTF8 );
 
             content = ReplaceString( values, content );
 
-            File.WriteAllText( to, content, Encoding.UTF8 );
+            File.WriteAllText( to, content, utf8nobom );
         }
 
 
