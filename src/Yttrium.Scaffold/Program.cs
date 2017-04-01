@@ -195,7 +195,7 @@ namespace Yttrium.Scaffold
                 if ( file.IsBinaryFile() == true )
                 {
                     Console.WriteLine( "  {0} *", ctx.Relative( toFile ) );
-                    File.Copy( fromFile, toFile );
+                    File.Copy( fromFile, toFile, true );
                 }
                 else
                 {
